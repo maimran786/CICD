@@ -1,0 +1,29 @@
+stages:
+  - test
+  - deploy
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+test_job:
+  stage: test
+  image: python:3.9
+  before_script:
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install pytest
+  script:
+    - pytest test_hello.py
+
+deploy_job:
+  stage: deploy
+  script:
+    - echo "Deploying the Hello World application..."
+    - echo "Application deployed successfully!"
+  only:
+    - main
